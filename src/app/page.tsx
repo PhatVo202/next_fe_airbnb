@@ -1,103 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Card } from "antd";
+import Meta from "antd/es/card/Meta";
+import Link from "next/link";
+import { convertToSlug } from "@/utils/slug";
 import Image from "next/image";
+import http from "@/lib/api";
+
+type City = { tinhThanh: string };
+
+const explorePlaces = [
+  { time: "15 phút", image: "https://res.cloudinary.com/rawn/image/upload/hnevi0eqxhxjgh6skplj.webp" },
+  { time: "3 giờ", image: "https://res.cloudinary.com/rawn/image/upload/lbe3gpqkrwmzt98ce2nj.webp" },
+  { time: "6.5 giờ", image: "https://res.cloudinary.com/rawn/image/upload/xi99sldgebhfvd3n66yx.webp" },
+  { time: "15 phút", image: "https://res.cloudinary.com/rawn/image/upload/hnevi0eqxhxjgh6skplj.webp" },
+  { time: "7.5 giờ", image: "https://res.cloudinary.com/rawn/image/upload/v1skk44cynr7gauhzb4e.webp" },
+  { time: "45 phút", image: "https://res.cloudinary.com/rawn/image/upload/tqrm3cthowneesuafbp0.webp" },
+  { time: "30 phút", image: "https://res.cloudinary.com/rawn/image/upload/tgt8dxlfwdh41jkptxeg.webp" },
+  { time: "5 giờ", image: "https://res.cloudinary.com/rawn/image/upload/bt5jrxsl5ljq5bmfqqw0.webp" },
+];
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [cities, setCities] = useState<City[] | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+
+    getPosition()
+    // http
+    //   .get("vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8")
+    //   .then((res) => setCities(res.data.content.data as City[]))
+    //   .catch(() => setCities([]));
+  }, []);
+
+  const getPosition = async () => {
+    const res = await http({ url: "vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8", method: "GET" })
+    res && setCities(res.data.content.data as City[])
+  }
+
+  console.log({ cities: cities })
+
+  return (
+
+    <div className="bg-white min-h-screen">
+      <div className="w-[95%] mx-auto space-y-12 py-10">
+        {cities && cities.length > 0 ? (
+          <div>
+            <h1 className="font-bold text-3xl mb-3">Khám phá điểm đến gần đây</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {cities.map((item, index) => (
+                <Link key={`${item.tinhThanh}-${index}`} href={`/city/${convertToSlug(item.tinhThanh)}`}>
+                  <Card
+                    hoverable
+                    className="w-full flex items-center cursor-pointer hover:bg-gray-100 hover:scale-105 transition duration-300 ease-in-out"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Image className="rounded-lg object-cover" src={explorePlaces[index]?.image} alt="" width={48} height={48} />
+                      <div>
+                        <h2 className="font-bold">{item.tinhThanh}</h2>
+                        <p className="text-gray-700 text-sm">{explorePlaces[index]?.time}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="space-y-3 pt-6 pb-16">
+          <h1 className="font-bold text-3xl">Ở bất cứ đâu</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-9">
+            {explorePlaces.map((item, index) => (
+              <Card key={index} hoverable className="w-full" cover={<Image alt="" src={item.image} width={500} height={250} style={{ width: "100%", height: "auto" }} />}>
+                <Meta title={item.time} />
+              </Card>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
