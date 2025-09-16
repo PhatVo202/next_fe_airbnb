@@ -25,20 +25,13 @@ export default function Home() {
   const [cities, setCities] = useState<City[] | null>(null);
 
   useEffect(() => {
-
     getPosition()
-    // http
-    //   .get("vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8")
-    //   .then((res) => setCities(res.data.content.data as City[]))
-    //   .catch(() => setCities([]));
   }, []);
 
   const getPosition = async () => {
     const res = await http({ url: "vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8", method: "GET" })
     res && setCities(res.data.content.data as City[])
   }
-
-  console.log({ cities: cities })
 
   return (
 

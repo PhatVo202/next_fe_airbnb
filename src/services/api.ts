@@ -75,34 +75,92 @@ export const userServ = {
 export const roomServ = {
   getAllRooms: () => {
     return http({
-      url: `/phong-thue`,
+      url: "/phong-thue",
       method: "GET",
+    });
+  },
+  createRoom: (data: unknown) => {
+    return http({
+      url: "/phong-thue",
+      method: "POST",
+      data: data,
+    });
+  },
+  uploadPhotoRoom: (id: number | string, photo: FormData) => {
+    return http({
+      url: `/phong-thue/upload-hinh-phong?maPhong=${id}`,
+      method: "POST",
+      data: photo,
+    });
+  },
+  deleteRoom: (id: number | string) => {
+    return http({
+      url: `/phong-thue/${id}`,
+      method: "DELETE",
+    });
+  },
+  updateRoom: (data: { id: number | string } & Record<string, unknown>) => {
+    return http({
+      url: `/phong-thue/${data.id}`,
+      method: "PUT",
+      data: data,
     });
   },
 };
 
-// export const roomServ = {
-//   getAllRooms: () => httpsNoLoading.get("/phong-thue"),
-//   createRoom: (data: unknown) => httpsAdmin.post("/phong-thue", data),
-//   uploadPhotoRoom: (id: number | string, photo: FormData) =>
-//     httpsAdmin.post(`/phong-thue/upload-hinh-phong?maPhong=${id}`, photo),
-//   deleteRoom: (id: number | string) => httpsAdmin.delete(`/phong-thue/${id}`),
-//   updateRoom: (data: { id: number | string } & Record<string, unknown>) =>
-//     httpsAdmin.put(`/phong-thue/${data.id}`, data),
-// };
+export const locationServ = {
+  getAllLocations: () => {
+    return http({
+      url: "/vi-tri",
+      method: "GET",
+    });
+  },
+  getLocationByID: (id: number | string) => {
+    return http({
+      url: `/vi-tri/${id}`,
+      method: "GET",
+    });
+  },
+  createLocation: (data: unknown) => {
+    return http({
+      url: "/vi-tri",
+      method: "POST",
+      data: data,
+    });
+  },
+  updateLocation: (data: { id: number | string } & Record<string, unknown>) => {
+    return http({
+      url: `/vi-tri/${data.id}`,
+      method: "PUT",
+      data: data,
+    });
+  },
+  deleteLocation: (id: number | string) => {
+    return http({
+      url: `/vi-tri/${id}`,
+      method: "DELETE",
+    });
+  },
+  uploadPhotoLocation: (id: number | string, photo: FormData) => {
+    return http({
+      url: `/vi-tri/upload-hinh-vitri?maViTri=${id}`,
+      method: "POST",
+      data: photo,
+    });
+  },
+};
 
-// export const locationServ = {
-//   getAllLocations: () => httpsNoLoading.get("/vi-tri"),
-//   getLocationByID: (id: number | string) => httpsNoLoading.get(`/vi-tri/${id}`),
-//   createLocation: (data: unknown) => httpsAdmin.post("/vi-tri", data),
-//   updateLocation: (data: { id: number | string } & Record<string, unknown>) =>
-//     httpsAdmin.put(`/vi-tri/${data.id}`, data),
-//   deleteLocation: (id: number | string) => httpsAdmin.delete(`/vi-tri/${id}`),
-//   uploadPhotoLocation: (id: number | string, photo: FormData) =>
-//     httpsAdmin.post(`/vi-tri/upload-hinh-vitri?maViTri=${id}`, photo),
-// };
-
-// export const bookingSer = {
-//   getAllBookings: () => httpsAdmin.get("/dat-phong"),
-//   deleteBooking: (id: number | string) => httpsAdmin.delete(`/dat-phong/${id}`),
-// };
+export const bookingSer = {
+  getAllBookings: () => {
+    return http({
+      url: "/dat-phong",
+      method: "GET",
+    });
+  },
+  deleteBooking: (id: number | string) => {
+    return http({
+      url: `/dat-phong/${id}`,
+      method: "DELETE",
+    });
+  },
+};
