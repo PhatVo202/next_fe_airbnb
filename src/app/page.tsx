@@ -21,6 +21,7 @@ const explorePlaces = [
 
 export default async function Home() {
 
+  // server side rendering
   const res = await http({ url: "vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8", method: "GET" });
   const cities: City[] = (res?.data?.content?.data as City[]) ?? [];
 
