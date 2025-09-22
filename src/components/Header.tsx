@@ -26,7 +26,7 @@ export default function Header() {
     };
 
     return (
-        <header className="w-full h-16 flex items-center border-b bg-white">
+        <header className="fixed top-0 z-40 w-full h-16 flex items-center border-b bg-white py-15 ">
             <div className="w-[95%] mx-auto flex items-center justify-between gap-4">
                 <Link href="/" className="font-bold text-xl">
                     <Image src="/images/Airbnb_Logo.png" alt="logo" width={100} height={100} />

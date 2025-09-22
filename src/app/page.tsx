@@ -34,9 +34,24 @@ export default function Home() {
   }
 
   return (
-
-    <div className="bg-white min-h-screen">
-      <div className="w-[95%] mx-auto space-y-12 py-10">
+    <div className="bg-white mt-32">
+      <div className="w-full relative">
+        <video
+          src="/video2.mov"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-[60vh] block object-cover"
+        />
+        <img
+          src="https://i.ibb.co/v4KS2mc/swoosh-hero.png"
+          alt=""
+          className="z-10 absolute w-full -bottom-20 left-0"
+        />
+      </div>
+      <div className="w-[95%] mx-auto space-y-12 py-10 block z-50 mt-30">
         {cities && cities.length > 0 ? (
           <div>
             <h1 className="font-bold text-3xl mb-3">Khám phá điểm đến gần đây</h1>
