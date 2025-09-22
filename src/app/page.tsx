@@ -1,6 +1,4 @@
-"use client";
 
-import { useEffect, useState } from "react";
 import { Card } from "antd";
 import Meta from "antd/es/card/Meta";
 import Link from "next/link";
@@ -21,17 +19,10 @@ const explorePlaces = [
   { time: "5 giờ", image: "https://res.cloudinary.com/rawn/image/upload/bt5jrxsl5ljq5bmfqqw0.webp" },
 ];
 
-export default function Home() {
-  const [cities, setCities] = useState<City[] | null>(null);
+export default async function Home() {
 
-  useEffect(() => {
-    getPosition()
-  }, []);
-
-  const getPosition = async () => {
-    const res = await http({ url: "vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8", method: "GET" })
-    res && setCities(res.data.content.data as City[])
-  }
+  const res = await http({ url: "vi-tri/phan-trang-tim-kiem?pageIndex=1&pageSize=8", method: "GET" });
+  const cities: City[] = (res?.data?.content?.data as City[]) ?? [];
 
   return (
     <div className="bg-white mt-32">
